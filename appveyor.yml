@@ -1,0 +1,15 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+install:
+- ps: >-
+    appveyor DownloadFile https://github.com/microsoft/WinAppDriver/releases/download/v1.1.1/WindowsApplicationDriver.msi
+
+    msiexec /i WindowsApplicationDriver.msi /quiet /qn /norestart /log install.log
+
+    # enable developer mode
+
+    reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+before_build:
+- cmd: nuget restore
+build:
+  verbosity: minimal
